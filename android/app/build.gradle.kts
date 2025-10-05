@@ -1,3 +1,5 @@
+import java.util.Properties
+import java.io.FileInputStream
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -8,7 +10,7 @@ plugins {
 android {
     namespace = "com.example.mapa"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+   ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -19,15 +21,21 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+ defaultConfig {
         applicationId = "com.example.mapa"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // 🔹 Aquí va tu código para leer la API Key
+        val props = Properties()
+        val propsFile = rootProject.file("local.properties")
+        if (propsFile.exists()) {
+            props.load(FileInputStream(propsFile))
+        }
+        val mapsKey = props.getProperty("MAPS_API_KEY") ?: ""
+        manifestPlaceholders["googleMapsKey"] = mapsKey
     }
 
     buildTypes {
