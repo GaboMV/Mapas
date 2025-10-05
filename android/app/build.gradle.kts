@@ -28,15 +28,19 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
-        // 🔹 Aquí va tu código para leer la API Key
-        val props = Properties()
-        val propsFile = rootProject.file("local.properties")
-        if (propsFile.exists()) {
-            props.load(FileInputStream(propsFile))
+   var mapsKey = ""
+        val envFile = File(rootDir, ".env")
+        if (envFile.exists()) {
+            envFile.forEachLine { line ->
+                val parts = line.split("=")
+                if (parts.size == 2 && parts[0].trim() == "MAPS_API_KEY") {
+                    mapsKey = parts[1].trim()
+                }
+            }
         }
-        val mapsKey = props.getProperty("MAPS_API_KEY") ?: ""
         manifestPlaceholders["googleMapsKey"] = mapsKey
     }
+
 
     buildTypes {
         release {

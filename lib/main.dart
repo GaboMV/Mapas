@@ -4,7 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env"); // Carga las variables
+  await dotenv.load(fileName: ".env.lat"); // Carga las variables
   runApp(const MyApp());
 }
 
